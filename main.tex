@@ -15,6 +15,7 @@
   \setbeamertemplate{caption}[numbered]
   \setbeamercolor{footline}{fg=blue}
   \setbeamertemplate{footline}[frame number]
+  \setbeamersize{text margin left=2em,text margin right=2em}
 } %https://www.overleaf.com/4781826268dvwjjbjvxdvn
 
 \usepackage[english]{babel}
@@ -23,7 +24,9 @@
 % url package setting
 \usepackage{hyperref}
 \usepackage{listings}
-  \lstset{language=C++}
+%\renewcommand{\ttdefault}{blg}
+\usepackage{inconsolata}
+  \lstset{language=C++, basicstyle=\ttfamily}
 \usepackage{graphicx}
   \graphicspath{{./figs/}}
 
@@ -159,97 +162,111 @@
 %%   \end{figure}
 %% \end{frame}
 
-\begin{frame}{Iterators}
-  \begin{figure}
-    \includegraphics[width=\textwidth]{LL_iterator.png}
-  \end{figure}
-\end{frame}
+%% \begin{frame}{Iterators}
+%%   \begin{figure}
+%%     \includegraphics[width=\textwidth]{LL_iterator.png}
+%%   \end{figure}
+%% \end{frame}
 
-\begin{frame}{Reverse Linked list}
-  \begin{figure}
-    \includegraphics[width=\textwidth]{LL_reverse.png}
-  \end{figure}
-\end{frame}
+%% \begin{frame}{Reverse Linked list}
+%%   \begin{figure}
+%%     \includegraphics[width=\textwidth]{LL_reverse.png}
+%%   \end{figure}
+%% \end{frame}
 
 \begin{frame}[fragile]{Linked list iterator}
-\begin{lstlisting}
+Now you write one!
+  \begin{lstlisting}
 class iterator {
   Node * current;
 public:
   iterator() : current(NULL) {}
   iterator(Node * c) : current(c) {}
-  iterator & operator++() {
-    current = current->next;
-    return *this;
-  }
-  bool operator==() {
-  }
-  iterator begin() {
-    return iterator(head);
-  }
-  iterator end() {
-    return iterator(NULL);
-  }
-}
-\end{lstlisting}
+  iterator & operator++();
+  bool operator==(const iterator & rhs) const;
+  iterator begin();
+  iterator end();
+};
+  \end{lstlisting}
 \end{frame}
 
-\subsection{STL list (Optional)}
-\begin{frame}[fragile]{STL list (Optional)}
-        \begin{enumerate}
-            \item \url{http://www.cplusplus.com/reference/list/list/}
-            \item Doubly-linked list.
-            \item \begin{verbatim}template <class T> class list;\end{verbatim}
-        \end{enumerate}
+\begin{frame}[fragile]{Linked list iterator}
+  \begin{lstlisting}
+iterator & operator++() {
+  current = current->next;
+  return *this;
+}
+bool operator==(const iterator & rhs) const {
+  return current == rhs.current;
+}
+iterator begin() {
+  return iterator(head);
+}
+iterator end() {
+  return iterator(NULL);
+}
+  \end{lstlisting}      
+\end{frame}
+
+\subsection{STL list}
+\begin{frame}[fragile]{STL list}
+  \begin{enumerate}
+  \item \url{http://www.cplusplus.com/reference/list/list/}
+  \item Doubly linked list
+  \item \begin{verbatim}template <class T> class list;\end{verbatim}
+  \end{enumerate}
 \end{frame}
 
 \section{Binary Search Tree}
 \subsection{BST overview}
+
 \begin{frame}{BST overview}
+  \begin{block}{What is a binary search tree?}
     \begin{itemize}
-        \item Linked list: linear sequence of nodes.
-        \item   usually results in $O(n)$ time.
-        \item Binary Search Tree:
-            \begin{enumerate}
-                \item split data into half each step according to some order.
-                \item usually results in $O(log[n])$ time.
-            \end{enumerate}
+    \item<2->Data structure designed to split search in half at each step 
+    \item<3->Usually results in $\mathcal{O}(\log{N})$ time
+    \item<4> Contrast with typical $\mathcal{O}(N)$ for linked list
     \end{itemize}
+  \end{block}
+  \begin{figure}[h]
+    \centering
+    \includegraphics<2->[scale=0.5]{bst}
+  \end{figure}
 \end{frame}
 
-\begin{frame}{BST diagram}
-        \begin{figure}
-            \includegraphics[width=0.6\textwidth]{BST_fig.png}
-            \caption{From Aop}
-    \end{figure}
-\end{frame}
+%% \begin{frame}{BST diagram}
+%%         \begin{figure}
+%%             \includegraphics[width=0.6\textwidth]{BST_fig.png}
+%%             \caption{From Aop}
+%%     \end{figure}
+%% \end{frame}
 
-\begin{frame}{BST class in c++}
-    We need:
-    \begin{itemize}
-        \item node class similar to Linked list.
-            \begin{itemize}
-                \item left and right pointers (edges). 
-                \item data
-            \end{itemize}
-        \item root (a pointer pointing at the very top node).
-    \end{itemize}
-\end{frame}
+%% \begin{frame}{BST class in c++}
+%%     We need:
+%%     \begin{itemize}
+%%         \item node class similar to Linked list.
+%%             \begin{itemize}
+%%                 \item left and right pointers (edges). 
+%%                 \item data
+%%             \end{itemize}
+%%         \item root (a pointer pointing at the very top node).
+%%     \end{itemize}
+%% \end{frame}
 
-\begin{frame}{BST class in C++}
-        \begin{figure}
-            \includegraphics[width=\textwidth]{BST_class.png}
-    \end{figure}
-\end{frame}
+%% \begin{frame}{BST class in C++}
+%%         \begin{figure}
+%%             \includegraphics[width=\textwidth]{BST_class.png}
+%%     \end{figure}
+%% \end{frame}
 
-\subsection{BST operations}
-\begin{frame}{common operations of BST}
-    \begin{itemize}
-        \item Search for a node
-        \item Adding a node 
-        \item Removing a Node
-    \end{itemize}
-\end{frame}
+%% \subsection{BST operations}
+%% \begin{frame}{common operations of BST}
+%%     \begin{itemize}
+%%         \item Search for a node
+%%         \item Adding a node 
+%%         \item Removing a Node
+%%     \end{itemize}
+%% \end{frame}
 
 \begin{frame}{Let's show a BST example}
     \begin{block}{VisuAlgo}
@@ -260,52 +277,52 @@ public:
     \end{block}
 \end{frame}
 
-\begin{frame}{Search for a node}
-        \begin{figure}
-            \includegraphics[width=\textwidth]{BST_find.png}
-    \end{figure}
-\end{frame}
+%% \begin{frame}{Search for a node}
+%%         \begin{figure}
+%%             \includegraphics[width=\textwidth]{BST_find.png}
+%%     \end{figure}
+%% \end{frame}
 
-\begin{frame}{Adding a node}
-        \begin{figure}
-            \includegraphics[width=\textwidth]{BST_add.png}
-    \end{figure}
-\end{frame}
+%% \begin{frame}{Adding a node}
+%%         \begin{figure}
+%%             \includegraphics[width=\textwidth]{BST_add.png}
+%%     \end{figure}
+%% \end{frame}
 
-\begin{frame}{Removing a Node}
-    \begin{itemize}
-        \item Removing a Node: Complex but many ways to do it but only one shown in this slide due to time limit.
-        \item two helper functions:
-            \begin{enumerate}
-                \item Find right most node. 
-                    \begin{itemize}
-                        \item why we need this?
-                        \item think about how remove is performed.
-                        % show visualization of removing nodes.
-                    \end{itemize}
-                \item delete helper actually perform removing.
-                \item delete function calling delete helper.
-            \end{enumerate}
-    \end{itemize}
-\end{frame}
+%% \begin{frame}{Removing a Node}
+%%     \begin{itemize}
+%%         \item Removing a Node: Complex but many ways to do it but only one shown in this slide due to time limit.
+%%         \item two helper functions:
+%%             \begin{enumerate}
+%%                 \item Find right most node. 
+%%                     \begin{itemize}
+%%                         \item why we need this?
+%%                         \item think about how remove is performed.
+%%                         % show visualization of removing nodes.
+%%                     \end{itemize}
+%%                 \item delete helper actually perform removing.
+%%                 \item delete function calling delete helper.
+%%             \end{enumerate}
+%%     \end{itemize}
+%% \end{frame}
 
-\begin{frame}{Recursively removing a Node:  Find right most node}
-        \begin{figure}
-            \includegraphics[width=\textwidth]{BST_FRM.png}
-    \end{figure}
-\end{frame}
+%% \begin{frame}{Recursively removing a Node:  Find right most node}
+%%         \begin{figure}
+%%             \includegraphics[width=\textwidth]{BST_FRM.png}
+%%     \end{figure}
+%% \end{frame}
 
-\begin{frame}{Recursively removing a Node:  Find right most node}
-        \begin{figure}
-            \includegraphics[width=\textwidth]{BST_FRM.png}
-    \end{figure}
-\end{frame}
+%% \begin{frame}{Recursively removing a Node:  Find right most node}
+%%         \begin{figure}
+%%             \includegraphics[width=\textwidth]{BST_FRM.png}
+%%     \end{figure}
+%% \end{frame}
 
-\begin{frame}{Removing a Node: remove}
-        \begin{figure}
-            \includegraphics[width=\textwidth]{BST_remove.png}
-    \end{figure}
-\end{frame}
+%% \begin{frame}{Removing a Node: remove}
+%%         \begin{figure}
+%%             \includegraphics[width=\textwidth]{BST_remove.png}
+%%     \end{figure}
+%% \end{frame}
 
 % if there are time left
 \subsection{Tree traversal}
