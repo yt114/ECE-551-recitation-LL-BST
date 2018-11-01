@@ -1,4 +1,4 @@
-\documentclass{beamer}
+\documentclass[aspectratio=169]{beamer}
 % created by Ye Tao 
 % at Oct 27 2018.
 % for the use of ECE551 recitation at Duke.
@@ -8,7 +8,7 @@
 %
 \mode<presentation>
 {
-  \usetheme{Warsaw}      % or try Darmstadt, Madrid, Warsaw, ...
+  \usetheme{Boadilla}      % or try Darmstadt, Madrid, Warsaw, ...
   \usecolortheme{default} % or try albatross, beaver, crane, ...
   \usefonttheme{default}  % or try serif, structurebold, ...
   \setbeamertemplate{navigation symbols}{}
@@ -23,6 +23,9 @@
 % url package setting
 \usepackage{hyperref}
 \usepackage{listings}
+  \lstset{language=C++}
+\usepackage{graphicx}
+  \graphicspath{{./figs/}}
 
 \title[]{ECE 551 Recitation \\ Linked List \& BST}
 
@@ -43,87 +46,84 @@
 \subsection{Linked list overview}
 
 \begin{frame}{Overview of Linked List}
-    \begin{block}{What is a linked list?}
-        \begin{itemize}
-        \item<2-> A structure which is linear sequence of nodes connected by pointers (Aop 21)
-        \item<3-> Common type: Singly Linked list, Doubly linked list.
-        \item<4> Some other variation: circular link list 
-    \end{itemize}
-    \end{block}
-\end{frame}
-
-% skip—review
-\begin{frame}{Singly linked list}
-    \begin{figure}
-        \includegraphics[width=\textwidth]{LL1.png}
-    \end{figure}
-\end{frame}
-
-\begin{frame}{Doubly linked list}
-    \begin{figure}
-        \includegraphics[width=\textwidth]{DLL.png}
-    \end{figure}
-\end{frame}
-
-\begin{frame}{implement linked list class in C++}
-    \begin{block}{Node class}
-        \begin{itemize}
-            \item data
-            \item prev (for doubly linked list)
-            \item next
-        \end{itemize}
-    \end{block}
-
+  \begin{block}{What is a linked list?}
     \begin{itemize}
-        \item head 
-        \item tail 
-        \item size (track of number of nodes)
+    \item<2-> A structure which is a linear sequence of nodes connected by pointers
+    \item<3-> Common types: singly linked list, doubly linked list
+    \item<4>  Other variation: circular link list 
     \end{itemize}
+  \end{block}
+  \begin{figure}[h]
+    \centering
+    \includegraphics<2->[scale=0.6]{linked-list}
+  \end{figure}
 \end{frame}
 
-\begin{frame}{implement linked list class in C++}
-    Let's first define a singly linked list:
-        \begin{figure}
-            \includegraphics[height=0.8\textheight]{code_ll2.png}
-    \end{figure}
-\end{frame}
+%% \begin{frame}{implement linked list class in C++}
+%%     \begin{block}{Node class}
+%%         \begin{itemize}
+%%             \item data
+%%             \item prev (for doubly linked list)
+%%             \item next
+%%         \end{itemize}
+%%     \end{block}
 
-\begin{frame}{Access specifiers of node class}
-\begin{block}{Should the Node subclass be public or private?
-\\How about its members?}
+%%     \begin{itemize}
+%%         \item head 
+%%         \item tail 
+%%         \item size (track of number of nodes)
+%%     \end{itemize}
+%% \end{frame}
+
+%% \begin{frame}{implement linked list class in C++}
+%%   Let's first define a singly linked list:
+%%   \begin{figure}
+%%     \includegraphics[height=0.8\textheight]{code_ll2.png}
+%%   \end{figure}
+%% \end{frame}
+
+\begin{frame}[fragile]{Access specifiers of node class}
+  \begin{columns}
+  \begin{column}{0.45\textwidth}
+  \begin{lstlisting}
+    template<typename T>
+    class LinkedList {
+      //public/private?
+      class Node {
+        //public/private?
+        T data;
+        Node * next;
+        Node * prev;
+      };
+    };
+  \end{lstlisting}
+  \end{column}
+
+  \begin{column}{0.55\textwidth}
+  \begin{block}{Should the Node subclass be public or private?
+      \\How about its members?}
     \begin{itemize}
-        \item Fields of Node class are public
-            \begin{enumerate}
-                \item can be directly accessed/changed by LinkedList Class.
-            \end{enumerate}
-        \item Node class is private member of LinkedList class.
-            \begin{enumerate}
-                \item can not be accessed/changed by the outside of LinkedList Class.
-            \end{enumerate}
-        \item Node class is recursive defined.
-            \begin{enumerate}
-                \item \textcolor{red}{Node * prev/next} inside Node class.
-                \item can only apply to \textcolor{red}{pointer}
-                \begin{enumerate}
-                    \item Why? Pointer size is fixed.
-                \end{enumerate}
-            \end{enumerate}
+    \item<2-> Node class is private member of LinkedList class---cannot be accessed/changed outside of LinkedList class
+    \item<3-> Fields of Node class are public---can be directly accessed/changed by LinkedList class
+    \item<4-> Node class is recursively defined
     \end{itemize}
-    \end{block}
+  \end{block}
+  \end{column}
+  \end{columns}
 \end{frame}
 
 \subsection{Linked list operations}
 
-\begin{frame}{summary of common operations}
-    \begin{enumerate}
-        \item Add Node to the front 
-        \item Add Node to the back
-        \item Proper Destructor
-        \item Add node in sorted list
-        \item Iterators
-        \item Reverse List
-    \end{enumerate}
-\end{frame}
+%% \begin{frame}{summary of common operations}
+%%     \begin{enumerate}
+%%         \item Add Node to the front 
+%%         \item Add Node to the back
+%%         \item Proper Destructor
+%%         \item Add node in sorted list
+%%         \item Iterators
+%%         \item Reverse List
+%%     \end{enumerate}
+%% \end{frame}
 
 \begin{frame}{Let's show a Linked List example}
     \begin{block}{VisuAlgo}
@@ -135,46 +135,44 @@
 \end{frame}
 
 % show LL codes below
-\begin{frame}{Add Node to the front}
-        \begin{figure}
-            \includegraphics[width=1.5\textwidth]{LL_addfront.png}
-    \end{figure}
-\end{frame}
+%% \begin{frame}{Add Node to the front}
+%%         \begin{figure}
+%%             \includegraphics[width=1.5\textwidth]{LL_addfront.png}
+%%     \end{figure}
+%% \end{frame}
 
-\begin{frame}{Add Node to the Back}
-        \begin{figure}
-            \includegraphics[width=1.3\textwidth]{LL_addback.png}
-    \end{figure}
-\end{frame}
+%% \begin{frame}{Add Node to the Back}
+%%         \begin{figure}
+%%             \includegraphics[width=1.3\textwidth]{LL_addback.png}
+%%     \end{figure}
+%% \end{frame}
 
-\begin{frame}{Proper Destructor}
-        \begin{figure}
-            \includegraphics[width=1.3\textwidth]{LL_destructor.png}
-    \end{figure}
-\end{frame}
+%% \begin{frame}{Proper Destructor}
+%%         \begin{figure}
+%%             \includegraphics[width=1.3\textwidth]{LL_destructor.png}
+%%     \end{figure}
+%% \end{frame}
 
-\begin{frame}{Add node in sorted list}
-        \begin{figure}
-            \includegraphics[width=0.9\textwidth]{LL_addsorted.png}
-    \end{figure}
-\end{frame}
+%% \begin{frame}{Add node in sorted list}
+%%   \begin{figure}
+%%     \includegraphics[width=0.9\textwidth]{LL_addsorted.png}
+%%   \end{figure}
+%% \end{frame}
 
 \begin{frame}{Iterators}
-        \begin{figure}
-            \includegraphics[width=\textwidth]{LL_iterator.png}
-    \end{figure}
+  \begin{figure}
+    \includegraphics[width=\textwidth]{LL_iterator.png}
+  \end{figure}
 \end{frame}
 
 \begin{frame}{Reverse Linked list}
-        \begin{figure}
-            \includegraphics[width=\textwidth]{LL_reverse.png}
-    \end{figure}
+  \begin{figure}
+    \includegraphics[width=\textwidth]{LL_reverse.png}
+  \end{figure}
 \end{frame}
 
-\begin{frame}{Linked list iterator}
-Your turn to write one!
-\begin{comment}
-%\begin{lstlisting}
+\begin{frame}[fragile]{Linked list iterator}
+\begin{lstlisting}
 class iterator {
   Node * current;
 public:
@@ -193,8 +191,7 @@ public:
     return iterator(NULL);
   }
 }
-%\end{lstlisting}
-\end{comment}
+\end{lstlisting}
 \end{frame}
 
 \subsection{STL list (Optional)}
