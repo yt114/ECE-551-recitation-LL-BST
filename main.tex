@@ -184,9 +184,10 @@ public:
   iterator(Node * c) : current(c) {}
   iterator & operator++();
   bool operator==(const iterator & rhs) const;
-  iterator begin();
-  iterator end();
+  T & operator*();
 };
+iterator begin();
+iterator end();
   \end{lstlisting}
 \end{frame}
 
@@ -198,6 +199,9 @@ iterator & operator++() {
 }
 bool operator==(const iterator & rhs) const {
   return current == rhs.current;
+}
+T & operator*() {
+  return current->data;
 }
 iterator begin() {
   return iterator(head);
@@ -326,27 +330,78 @@ iterator end() {
 
 % if there are time left
 \subsection{Tree traversal}
+
+\begin{frame}{Tree traversal}
+  \begin{block}{Inorder}
+    \begin{itemize}
+    \item Prints data in ascending order
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{block}{Preorder}
+    \begin{itemize}
+    \item Prints current data, followed by all to left, then all to right
+      (recursively)
+    \item When is this useful?\pause
+    \item Reconstruct tree by adding nodes in this order
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{block}{Postorder}
+    \begin{itemize}
+    \item Prints all to the left, all to the right, then the current
+      node (recursively)
+    \item When is this useful?\pause
+    \item Delete all nodes
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Write your own traversals}
+  \begin{lstlisting}
+    void printInorder(Node * current);
+    void printPreorder(Node * current);
+    void printPostorder(Node * current);
+  \end{lstlisting}
+\end{frame}
+
+%% \begin{frame}[fragile]{Write your own traversals}
+%%   \begin{columns}
+%%     \begin{column}{0.3\textwidth}
+%%       \begin{lstlisting}
+%% void printPreorder(Node * current) {
+%%   if (current != NULL) {
+%%     std::cout << current->data << `` ``;
+%%     printPreorder(current->left);
+%%     printPreorder(current->right);
+%%   }
+%% }
+%%       \end{lstlisting}
+%%     \end{column}
+%%   \end{columns}
+%% \end{frame}
+
 \begin{frame}{Three orders of tree traversal}
         \begin{figure}
             \includegraphics[width=\textwidth]{BST_traverse.png}
     \end{figure}
 \end{frame}
 
-\begin{frame}{Three orders of tree traversal}
-        \begin{figure}
-            \includegraphics[width=\textwidth]{BST_order.png}
-    \end{figure}
-\end{frame}
+%% \begin{frame}{Three orders of tree traversal}
+%%         \begin{figure}
+%%             \includegraphics[width=\textwidth]{BST_order.png}
+%%     \end{figure}
+%% \end{frame}
 
 \begin{frame}{STL Binary search tree?}
 
 \begin{itemize}
     \item No such thing in C++ STL.
-    \item Alternates: What you need is to find  data by a key.
+    \item Alternates: What you need is to find  data by a key
         \begin{itemize}
             \item std::map, std::set, etc.
-            \item they're actually implemented in red-black tree which is a variants of BST.
-            \item you'll learn that in Aop chapter 27.
+            \item Actually implemented in red-black tree which is a variant of BST
+            \item Learn about that in AoP chapter 27
         \end{itemize}
 \end{itemize}
     
